@@ -59,9 +59,13 @@ tasks {
         dest("$projectDir/src/main/assets/gpt2-vocab.json")
     }
     val downloadModel by creating(Download::class) {
-        onlyIf { !file("$projectDir/src/main/assets/model.tflite").exists() }
-        src("https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-64-fp16.tflite")
-        dest("$projectDir/src/main/assets/model.tflite")
+        onlyIf { !file("$projectDir/src/main/assets/model_dist.tflite").exists() }
+        // https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-64-fp16.tflite                    // FP16 quantization version
+        // "https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-64-8bits.tflite": "model.tflite" // 8-bit integers version
+        // "https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-64.tflite": "model.tflite"       // "raw" version
+        // "https://s3.amazonaws.com/models.huggingface.co/bert/distilgpt2-64.tflite": "model.tflite" // Distilled version
+        src("https://s3.amazonaws.com/models.huggingface.co/bert/distilgpt2-64.tflite")
+        dest("$projectDir/src/main/assets/model_dist.tflite")
     }
     val downloadMerges by creating(Download::class) {
         onlyIf { !file("$projectDir/src/main/assets/gpt2-merges.txt").exists() }
